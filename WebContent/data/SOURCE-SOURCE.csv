@@ -1,0 +1,45 @@
+ID,ITEM,MAKER,PRICE,QTY,CONTACTS
+1,1,3DSystems,500000,1,http://www.eye2eye.com.sg
+2,2,3DSystems,20000,1,http://www.eye2eye.com.sg
+3,3,Stratasys,550000,1,http://www.eye2eye.com.sg
+4,4,MaxJet,12500,1,http://www.eye2eye.com.sg
+5,5,MakerBot,4750,1,http://www.makerbot.com
+6,6,Accreate,50,1000,http://www.3dsolutions.com
+7,6,MakerBot,70,750,http://www.makerbot.com
+8,7,Cubicon,42750,1,http://www.3dsolutions.com
+9,8,Cubicon,70,500,http://www.3dsolutions.com
+10,9,Cubicon,75,500,http://www.3dsolutions.com
+11,10,Cubicon,85,500,http://www.3dsolutions.com
+12,11,Dremel,4450,1,http://www.3dsolutions.com
+13,12,MarkForge,750000,1,http://www.markforged.com
+14,13,MarkForge,450,750,http://www.markforged.com
+15,14,MarkForge,250,750,http://www.markforged.com
+16,15,UR,35000,1,http://www.universal-robots.com
+17,16,ABB,32000,1,http://www.abb.com.sg
+18,17,ABB,75000,1,http://www.abb.com.sg
+19,18,3DSystems,1250,500,http://www.eye2eye.com.sg
+20,19,3DSystems,1500,1000,http://www.eye2eye.com.sg
+21,20,3DSystems,1500,1000,http://www.eye2eye.com.sg
+22,21,Stratasys,2000,1000,http://www.eye2eye.com.sg
+23,22,Stratasys,2000,1000,http://www.eye2eye.com.sg
+24,23,Stratasys,2000,1000,http://www.eye2eye.com.sg
+25,24,RS,2.5,100,http://sg.rs-online.com
+26,24,Swee Lee,0.3,10,(65) 63557997
+27,25,RS,2.5,100,http://sg.rs-online.com
+28,25,Swee Lee,0.3,10,(65) 63557997
+29,26,RS,3.2,100,http://sg.rs-online.com
+30,27,RS,3.2,100,http://sg.rs-online.com
+31,28,RS,3.8,100,http://sg.rs-online.com
+32,29,RS,3.8,100,http://sg.rs-online.com
+33,30,RS,4.1,100,http://sg.rs-online.com
+34,31,RS,4.1,100,http://sg.rs-online.com
+35,32,SparkFun,7.95,1,http://www.sparkfun.com
+36,33,SparkFun,6.95,1,http://www.sparkfun.com
+27,34,PJRC,14.95,1,http://www.pjrc.com
+38,35,PJRC,19.95,1,http://www.pjrc.com
+39,36,DigiKey,250,1,http://www.digikey.com.sg
+40,37,Intel,225,1,http://www.intel.com
+41,38,Hakko,300,1,http://www.hakko.com.sg
+42,39,M10,1059.30,1,http://www.horme.com.sg
+43,40,SingChem,7.23,1,(65) 63883939
+44,41,SingWood,3.95,1,(65) 65757983

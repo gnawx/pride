@@ -1,0 +1,42 @@
+ID,KIND,DETAIL,UNIT
+1,6,Projet 5500X,units
+2,7,MJP EasyClean Warmer,units
+3,6,Stratasys Polyjet J750,units
+4,7,WaterJet Glovebox,units
+5,6,MakerBot Replicator 2,units
+6,8,Generic PLA Filament,g
+7,6,Cubicon MMP,units
+8,8,Cubicon PLA Filament,g
+9,8,Cubicon ABS Filament,g
+10,8,Cubicon TPU Filament,g
+11,6,Dremel IdeaBuilder,units
+12,6,MarkForged Mark 2,units
+13,8,MarkForged Carbon Fiber Filament,g
+14,8,MarkForged Onyx Filament,g
+15,5,UR3 Robotic Arm,units
+16,5,ABB IRB120 Robotic Arm,units
+17,5,ABB IRB760 Robotic Arm,units
+18,8,VisiJet S500,g
+19,8,VisiJet CE-BK,g
+20,8,VisiJet CR-WT,g
+21,8,Stratasys VeroClear,g
+22,8,Stratasys VeroCyan,g
+23,8,Stratasys VeroYellow,g
+24,1,M4 Nuts,pieces
+25,1,M4 Screws (20mm),pieces
+26,1,M5 Nuts,pieces
+27,1,M5 Screws (20mm),pieces
+28,1,M8 Nuts,pieces
+29,1,M8 Screws (30mm),pieces
+30,1,M10 Nuts,pieces
+31,1,M10 Screws (40mm),pieces
+32,2,Resistor Kit,packs
+33,2,Capacitor Kit,packs
+34,3,Teensy 3.2,pieces
+35,3,Teensy 3.6,pieces
+36,3,Raspberry Pi 3,pieces
+37,3,Edison Board,pieces
+38,4,Soldering Iron FX-951-66,units
+39,4,M10 Master Tool Set,units
+40,10,IPA,litres
+41,9,Display Pedestal,pieces

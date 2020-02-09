@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="css/w3.css" rel="stylesheet" />
+<link href="css/w3-theme-black.css" rel="stylesheet" />	
+<link href="css/custom.css" rel="stylesheet" />
+<script src="lib/jquery.js"></script>
+<link href="css/jquery-ui.min.css" rel="stylesheet" />
+<script src="lib/jquery-ui-edited.min.js"></script>
+<link href="css/bootstrap.css" rel="stylesheet" />
+<script src="lib/bootstrap.js"></script>
+<script src="lib/alasql.js"></script>
+<script src="lib/purl.js"></script>
+<script src="js/db.js"></script>
+<meta charset="utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="viewport" content="width=device-width">
+<title>PRIDE</title>
+</head>
+<body class="w3-light-grey">
+
+	<!-- Top container -->
+	<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+		<div class="w3-bar-item w3-col m3">
+			<button class="w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();">
+				<span class="glyphicon glyphicon-menu-hamburger"></span>
+			</button>
+		</div>
+		<div class="w3-bar-item w3-col m6">
+			<div class="input-group w3-padding-small" style="width: 100%; display: none;">
+				<input name="q" type="text" id="searchbar" class="form-control"
+					placeholder="Key in your search here.">
+				<span class="input-group-btn">
+					<button type="button" onclick="search()" class="btn btn-default">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</div>
+		</div>
+		<div class="w3-bar-item w3-col m3">
+			<span class="w3-bar-item w3-right" style="vertical-align: middle;"><span class="glyphicon glyphicon-cog w3-spin"></span> PRIDE</span>
+		</div>
+	</div>
+	<!-- Sidebar/menu -->
+	<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:5; width:300px;" id="mySidebar"><br>
+		<div class="w3-container w3-row">
+			<div id="greetings" class="w3-col s4">
+			</div>
+			<div class="w3-col s8 w3-bar">
+			<span class="w3-left">
+				Hello, <strong id="logname"></strong><br>
+				<i id="logtitle"></i>
+			</span>
+			</div>
+		</div>
+		<hr>
+		<div class="w3-container">
+			<h5 class="w3-wide"><b>MENU</b></h5>
+		</div>
+		<div class="w3-bar-block">
+			<!-- <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a> -->
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('dashboard.html?emp='+emp)">Dashboard
+			</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('inventory.html?emp='+emp)">Inventory Check
+            </a>
+            <a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-blue">Forms</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('usagetrack.html?emp='+emp)">Usage Tracking</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('procuretrack.html?emp='+emp)">Procurement Tracking</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-disabled">Waste Management</a>
+		</div>
+		<hr>
+		<div class="w3-container">
+			<h5 class="w3-wide"><b>DATABASE</b></h5>
+		</div>
+		<div class="w3-bar-block">
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="window.location.reload(true);">
+				<span class="glyphicon glyphicon-refresh"></span> Reload</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="DB.init();">
+				<span class="glyphicon glyphicon-repeat"></span> Initialize</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="DB.remove();">
+				<span class="glyphicon glyphicon-trash"></span> Delete</a>
+		</div>
+		<hr>
+		<div class="w3-bar-block">
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-text-red"
+					onclick="window.location.assign('index.html')">
+					<span class="glyphicon glyphicon-log-out"></span> Logout
+			</a>		
+		</div>
+	</nav>
+
+
+	<!-- Overlay effect when opening sidebar on small screens -->
+	<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:300px;margin-top:58px;">
+
+		<!-- Title Bar -->
+		<div id="titlebar" class="w3-bar w3-dark-gray" style="z-index:4;">
+			<div class="w3-bar-item w3-col s9">
+				<h4 class="w3-left w3-wide">FORMS</h4>
+			</div>
+		</div>
+
+		<!-- Tabs -->
+		<div id="scalefilter" class="w3-bar w3-grey">
+			<button name="f_Per" class="w3-bar-item w3-button tablink w3-blue" onclick="toggleInv(event,'f_Per')">Perishables Usage</button>
+			<button name="f_Eqp" class="w3-bar-item w3-button tablink" onclick="toggleInv(event,'f_Eqp')">Equipment Usage</button>
+			<button name="f_Reorder" class="w3-bar-item w3-button tablink" onclick="toggleInv(event,'f_Reorder')">Procurement - Reordering</button>
+			<button name="f_Buy" class="w3-bar-item w3-button tablink" onclick="toggleInv(event,'f_Buy')">Procurement - New Item</button>
+		</div>
+		
+		<!-- Perishables Form -->
+		<div id="f_Per" class="w3-container w3-margin-top scale">
+			<form id="reqForm_p" class="w3-container w3-card-4 w3-margin w3-padding-16 w3-light-grey">
+				<h3 class="w3-margin-bottom w3-center"><b>Perishables Usage Form</b></h3>
+				<div class="w3-row w3-padding">
+					<p>
+						<label>Item:</label>
+						<select class="w3-select w3-round w3-light-grey" name="p_opt">
+						</select>
+					</p>
+				</div>
+				<div class="w3-row w3-padding">
+					<p>
+						<label>Location:</label>
+						<select class="w3-select w3-round w3-light-grey" name="p_loc">
+						</select>
+					</p>
+				</div>
+				<div class="w3-row">
+					<div class="w3-col s3 w3-padding">
+						<p>
+							<label>Quantity:</label>
+							<div class="w3-half">
+								<input class="w3-input w3-border w3-light-grey w3-round" name="p_qty" type="number" min="1">	
+							</div>
+							<div class="w3-half">
+								<p class="w3-padding" name="p_unit">unit</p>
+							</div>
+						</p>
+					</div>
+					<div class="w3-col s5 w3-padding">
+						<p>
+							<label class="w3-margin-bottom">Pick-Up Date:</label>
+							<input class="w3-input w3-border w3-light-grey w3-round" name="p_pud" type="date">
+						</p>
+					</div>
+					<div class="w3-col s4 w3-padding">
+						<p>
+							<label class="w3-margin-bottom">Pick-Up Time:</label>
+							<input class="w3-input w3-border w3-light-grey w3-round" name="p_put" type="time">
+						</p>
+					</div>		
+				</div>
+				<div class="w3-row">
+					<label>Memo:</label>
+					<input class="w3-input w3-light-grey" placeholder="Write purpose here ..." name="p_memo" type="text">
+				</div>
+				
+				<span id="formproblem" class="w3-hide w3-text-red">Incomplete/invalid entries exist.</span>				
+				<span id="qtylimit" class="w3-hide w3-text-red">Quantity invalid / exceeds current stock.</span>				
+				
+				<button class="w3-button w3-teal w3-margin w3-right" type="button" onclick="pSubmit()">
+					<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Submit
+				</button>
+			</form>
+		</div>
+
+		<!-- Equipment Form -->
+		<div id="f_Eqp" class="w3-container w3-margin-top scale" style="display:none">
+			<form id="reqForm_e" class="w3-container w3-card-4 w3-margin w3-padding-16 w3-light-grey">
+				<h3 class="w3-margin-bottom w3-center"><b>Equipment Usage Form</b></h3>
+				<div class="w3-row w3-padding">
+					<p>
+						<label>Item: </label>
+						<select class="w3-select w3-round w3-light-grey" name="e_opt">
+						</select>
+					</p>
+				</div>
+				<div class="w3-row w3-padding">
+					<p>
+						<label>Location:</label>
+						<select class="w3-select w3-round w3-light-grey" name="e_loc">
+						</select>
+					</p>
+				</div>
+				<div class="w3-row w3-padding w3-hide" name="depopt">
+					<h5><b>Consumables/Perishables:</b></h5>
+					<div name="depcontent">
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-col s4 w3-padding">
+						<p>
+							<label>Duration (h):</label>
+							<div class="w3-quarter">
+								<input class="w3-input w3-border w3-light-grey w3-round" name="e_dur_h" type="number" min="0" max="48">
+							</div>
+							<div class="w3-quarter">
+								<p class="w3-padding">h</p>
+							</div>
+							<div class="w3-quarter">
+								<input class="w3-input w3-border w3-light-grey w3-round" name="e_dur_m" type="number" min="0" max="60">
+							</div>
+							<div class="w3-quarter">
+								<p class="w3-padding">min</p>
+							</div>
+						</p>
+					</div>
+					<div class="w3-col s4 w3-padding">
+						<p>
+							<label class="w3-margin-bottom">Start Date:</label>
+							<input class="w3-input w3-border w3-light-grey w3-round" name="e_str_d" type="date">
+						</p>
+					</div>
+					<div class="w3-col s4 w3-padding">
+						<p>
+							<label class="w3-margin-bottom">Start Time:</label>
+							<input class="w3-input w3-border w3-light-grey w3-round" name="e_str_t" type="time">
+						</p>
+					</div>		
+				</div>
+				<div class="w3-row">
+						<label>Memo:</label>
+						<input class="w3-input w3-light-grey" placeholder="Write purpose here ..." name="e_memo" type="text">
+					</div>
+					
+					<span id="formproblem" class="w3-hide w3-text-red">Incomplete/invalid entries exist.</span>				
+					<span id="qtylimit" class="w3-hide w3-text-red">Quantity invalid / exceeds current stock.</span>				
+	
+				<button class="w3-button w3-teal w3-margin w3-right" type="button" onclick="eSubmit()">
+					<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Submit
+				</button>
+			</form>
+		</div>
+
+		<!-- Procurement Form (Reordering) -->
+		<div id="f_Reorder" class="w3-container w3-margin-top scale" style="display:none">
+			<form id="reorderForm" class="w3-container w3-card-4 w3-margin w3-padding-16 w3-light-grey">
+				<h3 class="w3-margin-bottom w3-center"><b>Procurement Form - Reordering</b></h3>
+				
+				<div class="w3-row w3-padding w3-margin-bottom">
+					<div class="w3-col s6">
+						<p class="w3-margin-right">
+							<label>Select to Order: </label>
+							<select class="w3-select w3-round w3-light-grey" name="r_item">
+							</select>
+						</p>
+					</div>
+					<div class="w3-col s4">
+						<span class="w3-right w3-margin-right"><b>Available Budget ($):</b></span>
+					</div>
+					<div class="w3-col s2">
+						<span class="w3-right" name="budget"></span>
+					</div>
+				</div>
+				
+				<div class="w3-row-padding table-container w3-margin-bottom">
+					<table class="table">
+						<thead id="thead-reorder">
+							<tr>
+								<th class="w3-center"><span class="glyphicon glyphicon-trash"></span></th>
+								<th>Item</th>
+								<th>My Balance</th>
+								<th>Others' Balance</th>
+								<th>Source</th>
+								<th>Price/Unit</th>
+								<th></th>
+								<th>Quantity</th>
+								<th>Unit</th>
+								<th>Delivery</th>
+								<th>Subtotal</th>
+							</tr>
+						</thead>
+						<tbody id="tbody-reorder">
+						</tbody>
+					</table>
+				</div>
+
+				<div class="w3-row w3-padding w3-margin-bottom">
+					<div class="w3-col s6">
+						<p class="w3-margin-right">
+						</p>
+					</div>
+					<div class="w3-col s4">
+						<span class="w3-right w3-margin-right"><b>Total ($):</b></span>
+					</div>
+					<div class="w3-col s2">
+						<span class="w3-right w3-margin-right" name="total"></span>
+					</div>
+				</div>
+
+				<div class="w3-row w3-padding w3-margin-bottom">
+					<div class="w3-col s6">
+						<p class="w3-margin-right">
+						</p>
+					</div>
+					<div class="w3-col s4">
+						<span class="w3-right w3-margin"><b>Remaining Budget ($):</b></span>
+					</div>
+					<div class="w3-col s2 w3-border-top w3-border-blue">
+						<span class="w3-right w3-margin" name="remainder"></span>
+					</div>
+				</div>
+
+				<span id="formproblem" class="w3-hide w3-text-red">Incomplete/invalid entries exist.</span>				
+				<span id="qtylimit" class="w3-hide w3-text-red">Quantity invalid / exceeds current stock.</span>				
+				
+				<button class="w3-button w3-teal w3-margin w3-right" type="button" onclick="rSubmit()">
+					<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Submit
+				</button>
+			</form>
+		</div>
+
+		<!-- Procurement Form (New Item) -->
+		<div id="f_Buy" class="w3-container w3-margin-top scale" style="display:none">
+			<form id="procForm" class="w3-container w3-card-4 w3-margin w3-padding-16 w3-light-grey">
+				<h3 class="w3-margin-bottom w3-center"><b>Procurement Form - New Item</b></h3>
+					
+				<div class="w3-row w3-padding">
+					<div class="w3-col m10 s9">
+						<span class="w3-left"><b>Available Budget ($):</b></span>
+					</div>
+					<div class="w3-col m2 s3">
+						<span class="w3-right" name="budget"></span>
+					</div>
+				</div>
+
+				<div class="w3-col" name="lead">
+					<div class="w3-col" name="0">
+						<div class="w3-col m10 s9 w3-padding">
+							<h5 class="w3-margin-bottom" style="color: #337ab7;"><b>
+								<span class="glyphicon glyphicon-asterisk"></span> LEAD ITEM</b></h5>
+						</div>
+						<div class="w3-col m10 s9 w3-padding">
+							<p class="w3-padding">
+								<label>Category:</label>
+								<select class="w3-select w3-round w3-light-grey" name="b_cat">
+								</select>
+							</p>
+						</div>
+						<div class="w3-col m10 s9 w3-padding">
+							<p class="w3-padding">
+								<label>Item: </label>
+								<input class="w3-input w3-round w3-light-grey" name="b_opt" type="text">
+							</p>
+						</div>
+						<div class="w3-col m10 s9">
+							<div class="w3-col s4 w3-padding">
+								<p class="w3-padding">
+									<label class="w3-margin-bottom">Source:</label>
+									<input class="w3-input w3-round w3-light-grey" name="b_src" type="text">
+								</p>
+							</div>
+							<div class="w3-col s4 w3-padding">
+								<p class="w3-padding">
+									<label class="w3-margin-bottom">Order Placement Date:</label>
+									<input class="w3-input w3-border w3-light-grey w3-round" name="b_ord_d" type="date">
+								</p>
+							</div>
+							<div class="w3-col s4 w3-padding">
+								<p class="w3-padding">
+									<label class="w3-margin-bottom">Expected Delivery Date:</label>
+									<input class="w3-input w3-border w3-light-grey w3-round" name="b_del_d" type="date">
+								</p>
+							</div>		
+						</div>
+						<div class="w3-col m10 s9 w3-padding">
+							<div class="w3-col w3-half">
+								<p class="w3-padding w3-margin-right">
+									<label class="w3-left">Contact Info:</label>
+									<input class="w3-input w3-round w3-light-grey" name="b_cont" type="text">
+								</p>
+							</div>
+							<div class="w3-col w3-quarter">
+								<div class="w3-half">
+									<p class="w3-padding">
+										<label class="w3-left">Quantity:</label>
+										<input class="w3-input w3-border w3-light-grey w3-round" name="b_qty" type="number" min="0" onchange="updateCostNew()">
+									</p>
+								</div>
+								<div class="w3-half">
+									<p class="w3-padding">
+										<label class="w3-left">Unit:</label>
+										<input class="w3-input w3-round w3-light-grey" name="b_unit" type="text">
+									</p>
+								</div>
+							</div>
+							<div class="w3-col w3-quarter">
+								<div class="w3-quarter">
+									<label>&nbsp;</label>
+									<p class="w3-padding w3-center w3-large">x</p>
+								</div>
+								<div class="w3-rest">
+									<p class="w3-padding">
+										<label class="w3-left">Price/Unit:</label>
+										<input class="w3-input w3-round w3-light-grey" name="b_price" onchange="updateCostNew()" type="text">
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="w3-col m2 s3" style="margin-top:33px">
+							<span class="w3-right w3-padding" name="total"></span>
+						</div>
+
+						<div class="w3-col m10 s9 w3-padding">
+							<p class="w3-padding">
+								<label>Memo:</label>
+								<input class="w3-input w3-light-grey" placeholder="Write purpose here ..." name="b_memo" type="text">
+							</p>
+						</div>	
+					</div>
+				</div>
+
+				<div class="w3-col" name="lag">
+					<div class="w3-col" name="lagcontent">
+					</div>
+					<div class="w3-col m10 s9 w3-center">
+						<a name="lagTog" class="w3-hide" href="javascript:void(0)" onclick="addlag()">Do you want to add dependencies?</a>
+					</div>
+				</div>
+
+				<div class="w3-col w3-padding">
+					<div class="w3-col m10 s9">
+						<span class="w3-left"><b>Remaining Budget ($):</b></span>
+					</div>
+					<div class="w3-col m2 s3 w3-border-top w3-border-blue">
+						<span class="w3-right" style="padding-top: 8px;" name="remainder_new"></span>
+					</div>		
+				</div>
+
+				<span id="formproblem" class="w3-hide w3-text-red">Incomplete/invalid entries exist.</span>				
+				<span id="qtylimit" class="w3-hide w3-text-red">Quantity invalid / exceeds current stock.</span>				
+				<div class="w3-row w3-padding">
+					<button class="w3-button w3-teal w3-margin w3-right" type="button" onclick="bSubmit()">
+						<span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Submit
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- Confirmation Modal -->
+		<div id="cfm_modal" class="w3-modal w3-animate-opacity">
+			<div class="w3-modal-content w3-card-4 w3-round" style="margin-top: 200px;">
+				<div class="w3-container w3-center w3-padding w3-dark-grey">
+					<span onclick="document.getElementById('cfm_modal').style.display='none'" 
+						class="w3-button w3-xlarge w3-hover-none w3-hover-text-red w3-display-topright">
+						&times;
+					</span>
+					<h4 class="w3-wide">CONFIRM SUBMISSION</h4>
+				</div>
+				<div id="cfmtext" class="w3-container w3-center w3-padding">
+				</div>
+				<div id="buttoncontainer" class="w3-container w3-margin-bottom w3-center">
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<footer class="w3-container w3-block w3-padding-16 w3-light-grey">
+				<h5 class="w3-right w3-hide">&copy; 2017 WORKS Applications Pte Ltd</h5>
+		</footer>
+
+	<!-- End page content -->
+	</div>
+
+	<!-- SCRIPTS -->
+	<script src="js/greetings.js"></script>
+	<script src="js/equipstat.js"></script>
+	<script src="js/populateoptions.js"></script>
+    <script src="js/forms.js"></script>
+	<script src="js/populateselect.js"></script>
+	<script src="js/reorderformfx.js"></script>
+	<script src="js/newitemformfx.js"></script>
+	<script src="js/formsubmit.js"></script>
+	<script src="js/dbupdate.js"></script>
+
+	<!-- Navbar Toggle Script -->
+	<script>
+	// Get the Sidebar
+	var mySidebar = document.getElementById("mySidebar");
+
+	// Get the DIV with overlay effect
+	var overlayBg = document.getElementById("myOverlay");
+
+	// Toggle between showing and hiding the sidebar, and add overlay effect
+	function w3_open() {
+		if (mySidebar.style.display === 'block') {
+			mySidebar.style.display = 'none';
+			overlayBg.style.display = "none";
+		} else {
+			mySidebar.style.display = 'block';
+			overlayBg.style.display = "block";
+		}
+	}
+
+	// Close the sidebar with the close button
+	function w3_close() {
+		mySidebar.style.display = "none";
+		overlayBg.style.display = "none";
+	}
+	</script>
+
+</body>
+</html>

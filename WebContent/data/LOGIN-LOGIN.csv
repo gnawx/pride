@@ -1,0 +1,12 @@
+ID,EMP,PASS,NAME,POS,CODE,ACCLVL
+1,P001,0101,Mike Shimada,STARS Project Manager,P1,1
+2,P002,0202,Jun Miyazaki,Robotics Innovation Lab Manager,L1,1
+3,P003,0303,Kevin Matthews,STARS Project Member,P1,2
+4,P004,0404,Stacey McAdams,DManD Centre Manager,L3,1
+5,P005,0505,Elsa Zhang,MONOCO Project Manager,P2,1
+6,P006,0606,Tanya Chua,Air Lab Manager,L2,1
+7,P007,0707,Alfred Wayne,MONOCO Project Member,P2,2
+8,P008,0808,Ivan Wang,Autonomous Drone Project Manager,P3,1
+9,P009,0909,Shane Wakamoto,Autonomous Drone Project Member,P3,2
+10,P010,1010,Felix Hamada,MBC Project Manager,P4,1
+10,P011,1111,Shanelle LaBeouf,MBC Project Member,P4,2

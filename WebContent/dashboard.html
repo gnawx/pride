@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="css/w3.css" rel="stylesheet" />
+<link href="css/w3-theme-black.css" rel="stylesheet" />	
+<link href="css/custom.css" rel="stylesheet" />
+<script src="lib/jquery.js"></script>
+<link href="css/jquery-ui.min.css" rel="stylesheet" />
+<script src="lib/jquery-ui-edited.min.js"></script>
+<link href="css/bootstrap.css" rel="stylesheet" />
+<script src="lib/bootstrap.js"></script>
+<script src="lib/alasql.js"></script>
+<script src="lib/purl.js"></script>
+<script src="js/db.js"></script>
+<meta charset="utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="viewport" content="width=device-width">
+<title>PRIDE</title>
+</head>
+<body class="w3-light-grey">
+
+	<!-- Top container -->
+	<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+		<div class="w3-bar-item w3-col m3">
+			<button class="w3-button w3-hide-large w3-hover-none w3-hover-text-grey" onclick="w3_open();">
+				<span class="glyphicon glyphicon-menu-hamburger"></span>
+			</button>
+		</div>
+		<div class="w3-bar-item w3-col m6">
+			<div class="input-group w3-padding-small" style="width: 100%; display: none;">
+				<input name="q" type="text" id="searchbar" class="form-control"
+					placeholder="Key in your search here.">
+				<span class="input-group-btn">
+					<button type="submit" onclick="search()" class="btn btn-default">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</div>
+		</div>
+		<div class="w3-bar-item w3-col m3">
+			<span class="w3-bar-item w3-right" style="vertical-align: middle;">
+				<span class="glyphicon glyphicon-cog w3-spin"></span> PRIDE
+			</span>
+		</div>
+	</div>
+	<!-- Sidebar/menu -->
+	<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:5; width:300px; margin-top: 15px;" id="mySidebar"><br>
+		<div class="w3-container w3-row">
+			<div id="greetings" class="w3-col s4">
+			</div>
+			<div class="w3-col s8 w3-bar">
+			<span class="w3-left">
+				Hello, <strong id="logname"></strong><br>
+				<i id="logtitle"></i>
+			</span>
+			</div>
+		</div>
+		<hr>
+		<div class="w3-container">
+			<h5 class="w3-wide"><b>MENU</b></h5>
+		</div>
+		<div class="w3-bar-block">
+			<!-- <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a> -->
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-blue">Dashboard</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('inventory.html?emp='+emp)">Inventory Check
+			</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('forms.html?emp='+emp)">Forms</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('usagetrack.html?emp='+emp)">Usage Tracking</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding"
+				onclick="window.location.assign('procuretrack.html?emp='+emp)">Procurement Tracking</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-disabled">Waste Management</a>
+		</div>
+		<hr>
+		<div class="w3-container">
+			<h5 class="w3-wide"><b>DATABASE</b></h5>
+		</div>
+		<div class="w3-bar-block">
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="window.location.reload(true);">
+				<span class="glyphicon glyphicon-refresh"></span> Reload</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="DB.init();">
+				<span class="glyphicon glyphicon-repeat"></span> Initialize</a>
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding" onclick="DB.remove();">
+				<span class="glyphicon glyphicon-trash"></span> Delete</a>
+		</div>
+		<hr>
+		<div class="w3-bar-block">
+			<a href="javascript:void(0)" class="menu w3-bar-item w3-button w3-padding w3-text-red"
+					onclick="window.location.assign('index.html')">
+					<span class="glyphicon glyphicon-log-out"></span> Logout
+			</a>
+		</div>
+	</nav>
+
+
+	<!-- Overlay effect when opening sidebar on small screens -->
+	<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+		<!-- Budget -->
+		<header class="w3-container w3-col" style="padding-top:22px">
+			<h5 class="w3-left"><b><span class="glyphicon glyphicon-edit"></span>&nbsp;Remaining Budget:</b>&nbsp;&nbsp;&nbsp;S$&nbsp;<span id="dashbudget"></span></h5>
+		</header>
+
+		<!-- Members / Projects -->
+		<header class="w3-container w3-col" style="padding-top:22px">
+			<h5 class="w3-left" name="memberproj"></h5>
+		</header>
+		<div class="w3-container w3-col w3-center" name="memberprojlist" style="padding-top:22px">
+		</div>
+
+		<!-- Highlight -->
+		<header class="w3-container w3-col" style="padding-top:22px">
+			<h5><b><span class="glyphicon glyphicon-star"></span>&nbsp;Overview</b></h5>
+		</header>
+
+		<div class="w3-row-padding w3-col">
+			<div class="w3-row">
+				<div id="itemthres" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Item Hitting Threshold
+							<a href="javascript:void(0)" onclick="window.location.assign('inventory.html?emp='+emp+'&amp;val='+2)">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+				<div id="usagecol" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Usages Pending Finalization
+							<a href="javascript:void(0)" onclick="window.location.assign('usagetrack.html?emp='+emp+'&amp;tab=usagecol')">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+				<div id="usageappr" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Usages Pending Approval
+							<a href="javascript:void(0)" onclick="window.location.assign('usagetrack.html?emp='+emp+'&amp;tab=usageappr')">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+			</div>
+			<div class="w3-row">
+				<div id="equiprep" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Equipment Out of Order
+							<a href="javascript:void(0)" onclick="window.location.assign('inventory.html?emp='+emp+'&amp;val='+3)">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+				<div id="procdel" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Procurements Pending Delivery
+							<a href="javascript:void(0)" onclick="window.location.assign('procuretrack.html?emp='+emp+'&amp;tab=procdel')">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+				<div id="procappr" class="w3-col m4">
+					<div name="bg" class="w3-container w3-padding-16">
+						<div name="icon" class="w3-left"></div>
+						<div class="w3-center">
+						<h2 name="num"></h2>
+						</div>
+						<div class="w3-clear"></div>
+						<h4 name="title" class="w3-center">
+							Procurements Pending Approval
+							<a href="javascript:void(0)" onclick="window.location.assign('procuretrack.html?emp='+emp+'&amp;tab=procappr')">
+							<span class="glyphicon glyphicon-new-window"></span></a>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<!-- Scheduler -->
+		<header class="w3-container w3-col" style="padding-top:22px; display: none;">
+			<h5><b><span class="w3-left glyphicon glyphicon-list-alt"></span>&nbsp;Scheduler</b></h5>
+			<div class="w3-col s9">
+				<p>You have not complete daily scheduled maintenance.</p>
+			</div>
+			<div class="w3-col s3">
+				<a href="#" class="menu w3-right w3-text-blue-gray w3-hover-text-blue">Run Scheduler</a>
+			</div>
+		</header>
+
+		<!-- Footer -->
+		<footer class="footer w3-container w3-col w3-block w3-padding-16 w3-light-grey">
+				<h5 class="w3-right w3-hide">&copy; 2017 WORKS Applications Pte Ltd</h5>
+		</footer>
+
+		<!-- End page content -->
+	</div>
+	
+	<!-- SCRIPTS -->
+	<script src="js/greetings.js"></script>
+	<script src="js/equipstat.js"></script>
+	<script src="js/dashboard.js"></script>
+
+	<!-- Navbar Toggle Script -->
+	<script>
+	// Get the Sidebar
+	var mySidebar = document.getElementById("mySidebar");
+
+	// Get the DIV with overlay effect
+	var overlayBg = document.getElementById("myOverlay");
+
+	// Toggle between showing and hiding the sidebar, and add overlay effect
+	function w3_open() {
+		if (mySidebar.style.display === 'block') {
+			mySidebar.style.display = 'none';
+			overlayBg.style.display = "none";
+		} else {
+			mySidebar.style.display = 'block';
+			overlayBg.style.display = "block";
+		}
+	}
+
+	// Close the sidebar with the close button
+	function w3_close() {
+		mySidebar.style.display = "none";
+		overlayBg.style.display = "none";
+	}
+	</script>
+
+</body>
+</html>

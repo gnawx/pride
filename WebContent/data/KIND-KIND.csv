@@ -1,0 +1,11 @@
+ID,DESCR,CLS
+1,Mechanical Components,Perishables
+2,Electrical Components,Perishables
+3,Microprocessors/Micro-Computers,Perishables
+4,Tools,Equipment
+5,Robots,Equipment
+6,3D Printers,Equipment
+7,3D Printer Support Hardware,Equipment
+8,3D Printing Materials,Perishables
+9,Miscellaneous Hardware,Equipment
+10,Miscellaneous Perishables,Perishables
